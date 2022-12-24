@@ -94,9 +94,9 @@ public class OrderRepository {
             if(orderAndDeliveryPartnerMap.get(orderId).equalsIgnoreCase(partnerId)){
 
                 Order order = orderMap.get(orderId);
-//                if(order.getDeliveryTime() > order.convert(time)){
+                if(order.getDeliveryTime() > order.convert(time)){
                     count++;
-//                }
+                }
             }
         }
         return count;

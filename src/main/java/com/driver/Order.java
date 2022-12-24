@@ -16,4 +16,13 @@ public class Order {
     }
 
     public int getDeliveryTime() {return deliveryTime;}
+
+    public int convert(String deliveryTime)
+    {
+        String[] arr = deliveryTime.split(":");
+        int hr = Integer.parseInt(arr[0]);
+        int min = Integer.parseInt(arr[1]);
+
+        return (hr*60) + min;
+    }
 }
