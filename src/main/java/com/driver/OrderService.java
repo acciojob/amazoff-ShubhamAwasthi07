@@ -17,27 +17,27 @@ public class OrderService {
         orderRepository.addOrderInDB(order);
     }
 
-    public void addPartner( String partnerId)
+    public void addPartner(String partnerId)
     {
         orderRepository.addDeliveryPartnerInDB(partnerId);
     }
 
-    public void addOrderPartnerPair( String orderId,  String partnerId)
+    public void addOrderPartnerPair(String orderId, String partnerId)
     {
         orderRepository.addOrderPartnerPairInDB(orderId,partnerId);
     }
 
-    public Order getOrderById( String orderId)
+    public Order getOrderById(String orderId)
     {
         return orderRepository.getOrderById(orderId);
     }
 
-    public DeliveryPartner getPartnerById( String partnerId)
+    public DeliveryPartner getPartnerById(String partnerId)
     {
         return orderRepository.getPartnerById(partnerId);
     }
 
-    public Integer getOrderCountByPartnerId( String partnerId)
+    public int getOrderCountByPartnerId(String partnerId)
     {
         return orderRepository.getOrderCountByPartnerId(partnerId);
     }
@@ -52,27 +52,27 @@ public class OrderService {
         return orderRepository.getAllOrder();
     }
 
-    public Integer getCountOfUnassignedOrders()
+    public int getCountOfUnassignedOrders()
     {
         return orderRepository.getCountOfUnassignedOrders();
     }
 
-    public Integer getOrdersLeftAfterGivenTimeByPartnerId( String time,  String partnerId)
+    public int getOrdersLeftAfterGivenTimeByPartnerId( String time,  String partnerId)
     {
         return orderRepository.getOrdersLeftAfterGivenTimeByPartnerId(time,partnerId);
     }
 
-    public String getLastDeliveryTimeByPartnerId( String partnerId)
+    public String getLastDeliveryTimeByPartnerId(String partnerId)
     {
         return orderRepository.getLastDeliveryTimeByPartnerId(partnerId);
     }
 
-    public void deletePartnerById( String partnerId)
+    public void deletePartnerById(String partnerId)
     {
         orderRepository.deletePartnerById(partnerId);
     }
 
-    public void deleteOrderById( String orderId)
+    public void deleteOrderById(String orderId)
     {
         orderRepository.deleteOrderById(orderId);
     }
