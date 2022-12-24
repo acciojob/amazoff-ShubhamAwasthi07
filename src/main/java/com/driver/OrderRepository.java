@@ -1,5 +1,6 @@
 package com.driver;
 
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -8,14 +9,17 @@ import java.util.*;
 public class OrderRepository {
 
     private HashMap<String , Order> orderMap;
-    private HashMap<String ,DeliveryPartner> deliveryPartnerMap;
-
+    private HashMap<String ,Integer> deliveryPartnerMap;
     private HashMap<String , List<String>>orderPartnerMap;
+
+    private Map<String , Integer> orderTimeMap;
+
 
     public OrderRepository() {
         this.orderMap = new HashMap<String , Order>();
-        this.deliveryPartnerMap = new HashMap<String , DeliveryPartner>();
+        this.deliveryPartnerMap = new HashMap<String , Integer>();
         this.orderPartnerMap = new HashMap<String , List<String>>();
+        this.orderTimeMap = new HashMap<String , Integer>();
     }
 
     public void addOrderInDB(Order order){
@@ -23,39 +27,41 @@ public class OrderRepository {
     }
 
     public void addDeliveryPartnerInDB(String partnerId){
-        DeliveryPartner deliveryPartner = new DeliveryPartner(partnerId);
-        deliveryPartnerMap.put(partnerId , deliveryPartner);
+        deliveryPartnerMap.put(partnerId , deliveryPartnerMap.getOrDefault(partnerId , 0) + 1);
     }
 
     public void addOrderPartnerPairInDB(String orderId , String partnerId){
 
-       List<String> orders = new ArrayList<>();
-       if(orderMap.containsKey(orderId) && deliveryPartnerMap.containsKey(partnerId)){
-           orderMap.put(orderId , orderMap.get(orderId));
-           deliveryPartnerMap.put(partnerId , deliveryPartnerMap.get(partnerId));
-
-           if(orderPartnerMap.containsKey(partnerId)){
-               orders = orderPartnerMap.get(partnerId);
-           }
-           orders.add(orderId);
-
-           deliveryPartnerMap.get(partnerId).setNumberOfOrders(orders.size());
-       }
-       orderPartnerMap.put(partnerId , orders);
+        List<String> temp = orderPartnerMap.get(partnerId);
+        if(temp==null){
+            temp = new ArrayList<>();
+            temp.add(orderId);
+            orderPartnerMap.put(partnerId , temp);
+        }
+        else {
+            temp.add(orderId);
+        }
 
     }
 
     public Order getOrderById(String orderId){
-        return orderMap.get(orderId);
+        if(orderMap.containsKey(orderId))
+            return orderMap.get(orderId);
+        return new Order("Not Exist" , "Not Exist");
     }
 
     public DeliveryPartner getPartnerById(String partnerId){
-        return deliveryPartnerMap.get(partnerId);
+        if(orderPartnerMap.containsKey(partnerId)){
+            DeliveryPartner deliveryPartner = new DeliveryPartner(partnerId);
+            deliveryPartner.setNumberOfOrders(deliveryPartnerMap.get(partnerId));
+            return deliveryPartner;
+        }
+        return new DeliveryPartner("Not Exist");
     }
 
     public Integer getOrderCountByPartnerId(String partnerId){
         int cnt = 0;
-        if(deliveryPartnerMap.containsKey(partnerId)){
+        if(orderPartnerMap.containsKey(partnerId)){
             cnt = orderPartnerMap.get(partnerId).size();
         }
         return cnt;
